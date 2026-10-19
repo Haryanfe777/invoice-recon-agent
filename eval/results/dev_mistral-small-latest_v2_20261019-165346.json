@@ -1,0 +1,1831 @@
+{
+ "model": "mistral-small-latest",
+ "agent_version": "v2",
+ "workers": 1,
+ "summary": {
+  "questions": 48,
+  "accuracy": 0.8541666666666666,
+  "right_tools": 1.0,
+  "mean_llm_calls": 3.7291666666666665,
+  "answers_rejected_by_verifier": 7,
+  "latency_p50_ms": 2675.1000000000004,
+  "latency_p95_ms": 4102.19,
+  "cost_per_1k_requests_usd": 0.7243750000000001,
+  "mean_tokens": 6662.5,
+  "failures": {
+   "refused": 5,
+   "false_match": 1,
+   "overcounted_payment": 1
+  },
+  "accuracy_by_category": {
+   "duplicate_doc": "5/5",
+   "not_found": "3/5",
+   "paid_no_ref": "5/5",
+   "plain_paid": "6/6",
+   "plain_partial": "4/4",
+   "similar_name": "5/6",
+   "split_payment": "7/7",
+   "unpaid": "5/6",
+   "vat_only": "1/4"
+  }
+ },
+ "rows": [
+  {
+   "qid": "Q001",
+   "category": "paid_no_ref",
+   "traps": [
+    "paid_no_ref"
+   ],
+   "question": "Is invoice LFN-2026-0001 from Lefebvre Nettoyage fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0001",
+    "amount_ttc": 1436.15,
+    "paid_amount": 1436.15,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0001",
+    "invoice_amount_ttc": 1436.15,
+    "paid_amount": 1436.15,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00017"
+    ],
+    "explanation": "Invoice LFN-2026-0001 for €1,436.15 TTC was paid on 2026-02-06 by SEPA transfer (TXN-00017) to Lefebvre Nettoyage."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3398.6,
+   "cost_usd": 0.0008322,
+   "tokens": 7740,
+   "request_id": "ec48c98b5567"
+  },
+  {
+   "qid": "Q002",
+   "category": "plain_paid",
+   "traps": [],
+   "question": "Did we pay Michel Electricite for the invoice dated 2026-02-19? Does the amount match the invoice total?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MEL-2026-0002",
+    "amount_ttc": 9648.3,
+    "paid_amount": 9648.3,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MEL-2026-0002",
+    "invoice_amount_ttc": 9648.3,
+    "paid_amount": 9648.3,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00060"
+    ],
+    "explanation": "Invoice MEL-2026-0002 from Michel Electricite for 9648.30 EUR TTC was paid on 2026-03-30 via TXN-00060, matching the invoice total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2701.9,
+   "cost_usd": 0.0004962,
+   "tokens": 4514,
+   "request_id": "2a2d9050c3e2"
+  },
+  {
+   "qid": "Q003",
+   "category": "similar_name",
+   "traps": [
+    "vat_only",
+    "duplicate_doc",
+    "similar_name"
+   ],
+   "question": "Has supplier Bernard Logistics's January invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "BLS-2026-0001",
+    "amount_ttc": 7443.42,
+    "paid_amount": 7055.37,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "insufficient_evidence",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No answer given: the evidence did not support it. status paid is inconsistent with paid 7055.37 vs TTC 7443.42 (expected partially_paid)"
+   },
+   "outcome": "refused",
+   "correct": false,
+   "failure": "refused",
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 2,
+   "verifier_rejections": 2,
+   "verifier_problems": [
+    "paid_amount 7443.42 is not the sum of the cited transactions (7055.37)",
+    "status paid is inconsistent with paid 7055.37 vs TTC 7443.42 (expected partially_paid)"
+   ],
+   "latency_ms": 3816.2,
+   "cost_usd": 0.0009937,
+   "tokens": 9115,
+   "request_id": "c7e665d52a20"
+  },
+  {
+   "qid": "Q004",
+   "category": "plain_paid",
+   "traps": [],
+   "question": "Did we pay Petit Imprimerie for the invoice dated 2026-05-01? Does the amount match the invoice total?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "PIM-2026-0004",
+    "amount_ttc": 1877.42,
+    "paid_amount": 1877.42,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "PIM-2026-0004",
+    "invoice_amount_ttc": 1877.42,
+    "paid_amount": 1877.42,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00113"
+    ],
+    "explanation": "Invoice PIM-2026-0004 from Petit Imprimerie (1877.42 EUR TTC) was paid on 2026-06-03 for the exact amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2463.8,
+   "cost_usd": 0.0005717,
+   "tokens": 5275,
+   "request_id": "203ff32452ee"
+  },
+  {
+   "qid": "Q005",
+   "category": "similar_name",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "Has supplier Bernard Logistique's June invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "BLG-2026-0005",
+    "amount_ttc": 14192.86,
+    "paid_amount": 14192.86,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "BLG-2026-0005",
+    "invoice_amount_ttc": 14192.86,
+    "paid_amount": 14192.86,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00142"
+    ],
+    "explanation": "Invoice BLG-2026-0005 for €14,192.86 TTC was paid on 2026-07-16 by bank transfer (TXN-00142) referencing the invoice."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2198.7,
+   "cost_usd": 0.0005762,
+   "tokens": 5276,
+   "request_id": "b73506291d63"
+  },
+  {
+   "qid": "Q006",
+   "category": "duplicate_doc",
+   "traps": [
+    "vat_only",
+    "duplicate_doc"
+   ],
+   "question": "How much is still owed to Bonnet Telecom for their January 2026 invoice?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "BTC-2026-0001",
+    "amount_ttc": 760.22,
+    "paid_amount": 633.52,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "BTC-2026-0001",
+    "invoice_amount_ttc": 760.22,
+    "paid_amount": 633.52,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00023"
+    ],
+    "explanation": "Invoice BTC-2026-0001 (760.22 EUR TTC) shows a single payment of 633.52 EUR on 2026-02-18 (TXN-00023), leaving 126.70 EUR still owed."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2912.3,
+   "cost_usd": 0.0007591,
+   "tokens": 6941,
+   "request_id": "990fc8d8dd61"
+  },
+  {
+   "qid": "Q007",
+   "category": "vat_only",
+   "traps": [
+    "vat_only"
+   ],
+   "question": "Did we pay Girard Energie for the invoice dated 2026-04-18? Does the amount match the invoice total?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "GEN-2026-0004",
+    "amount_ttc": 9739.98,
+    "paid_amount": 9232.21,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "insufficient_evidence",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No answer given: the evidence did not support it. transactions not returned by query_ledger: TXN-105; paid_amount 9232.21 is not the sum of the cited transactions (0.00)"
+   },
+   "outcome": "refused",
+   "correct": false,
+   "failure": "refused",
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 2,
+   "verifier_rejections": 2,
+   "verifier_problems": [
+    "status paid is inconsistent with paid 9232.21 vs TTC 9739.98 (expected partially_paid)",
+    "amount_matches should be False",
+    "transactions not returned by query_ledger: TXN-105",
+    "paid_amount 9232.21 is not the sum of the cited transactions (0.00)"
+   ],
+   "latency_ms": 3750.7,
+   "cost_usd": 0.0007879,
+   "tokens": 7043,
+   "request_id": "67edba770909"
+  },
+  {
+   "qid": "Q008",
+   "category": "plain_partial",
+   "traps": [],
+   "question": "Is invoice GTR-2026-0003 from Garcia Traiteur fully paid?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "GTR-2026-0003",
+    "amount_ttc": 10037.66,
+    "paid_amount": 7026.36,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "GTR-2026-0003",
+    "invoice_amount_ttc": 10037.66,
+    "paid_amount": 7026.36,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00100"
+    ],
+    "explanation": "Invoice GTR-2026-0003 from Garcia Traiteur (10 037,66 EUR TTC) shows a single payment of 7 026,36 EUR (TXN-00100) on 2026-05-18 labelled as an advance for this invoice. No further payment matches the remaining 3 011,30 EUR."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 6,
+   "tool_calls": 5,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 4199.0,
+   "cost_usd": 0.0012851,
+   "tokens": 12033,
+   "request_id": "ed2717aff907"
+  },
+  {
+   "qid": "Q009",
+   "category": "unpaid",
+   "traps": [],
+   "question": "Did we pay Roux Securite for the invoice dated 2026-05-22? Does the amount match the invoice total?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "RXS-2026-0003",
+    "amount_ttc": 5643.74,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "unpaid",
+    "invoice_number": "RXS-2026-0003",
+    "invoice_amount_ttc": 5643.74,
+    "paid_amount": 0.0,
+    "amount_matches": false,
+    "evidence_transaction_ids": [],
+    "explanation": "Invoice RXS-2026-0003 (5 643,74 EUR TTC) issued 2026-05-22 was not paid. Payments found for Roux Securite concern invoice RXS-2026-0004 and total 4 482,67 EUR."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2860.7,
+   "cost_usd": 0.0006823,
+   "tokens": 6171,
+   "request_id": "488cc9ceea58"
+  },
+  {
+   "qid": "Q010",
+   "category": "similar_name",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "Has supplier Dupont's April invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "DUP-2026-0004",
+    "amount_ttc": 3335.93,
+    "paid_amount": 3335.93,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "DUP-2026-0004",
+    "invoice_amount_ttc": 3335.93,
+    "paid_amount": 3335.93,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00081"
+    ],
+    "explanation": "Invoice DUP-2026-0004 for 3335.93 EUR from Dupont SARL was paid on 2026-04-21 (TXN-00081) with a matching amount and reference."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2279.0,
+   "cost_usd": 0.0005941,
+   "tokens": 5463,
+   "request_id": "d5ff81c16624"
+  },
+  {
+   "qid": "Q011",
+   "category": "not_found",
+   "traps": [],
+   "question": "Has supplier Chevalier Peinture's April invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "not_found",
+    "invoice_number": null,
+    "amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null
+   },
+   "answer": {
+    "status": "not_found",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No invoice from supplier 'Chevalier Peinture' issued in April 2026 was found in the system."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 6,
+   "tool_calls": 5,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3616.7,
+   "cost_usd": 0.0013221,
+   "tokens": 12789,
+   "request_id": "5012d31ce72d"
+  },
+  {
+   "qid": "Q012",
+   "category": "not_found",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "Has supplier Bernard Logistique's January invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "not_found",
+    "invoice_number": null,
+    "amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null
+   },
+   "answer": {
+    "status": "insufficient_evidence",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No answer given: the evidence did not support it. paid_amount 7443.42 is not the sum of the cited transactions (7055.37)"
+   },
+   "outcome": "refused",
+   "correct": false,
+   "failure": "refused",
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 2,
+   "verifier_rejections": 2,
+   "verifier_problems": [
+    "paid_amount 7443.42 is not the sum of the cited transactions (7055.37)",
+    "paid_amount 7443.42 is not the sum of the cited transactions (7055.37)"
+   ],
+   "latency_ms": 3335.2,
+   "cost_usd": 0.0009891,
+   "tokens": 9073,
+   "request_id": "582aa65ecfc9"
+  },
+  {
+   "qid": "Q013",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "Did we pay Moreau Conseil for the invoice dated 2026-03-01? Does the amount match the invoice total?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MRC-2026-0002",
+    "amount_ttc": 1926.32,
+    "paid_amount": 1926.32,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MRC-2026-0002",
+    "invoice_amount_ttc": 1926.32,
+    "paid_amount": 1926.32,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00055",
+     "TXN-00074"
+    ],
+    "explanation": "The invoice MRC-2026-0002 (1 926.32 EUR TTC) was paid in two instalments: 577.90 EUR on 2026-03-27 and 1 348.42 EUR on 2026-04-14, matching the total amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2469.5,
+   "cost_usd": 0.0005937,
+   "tokens": 5433,
+   "request_id": "6c9a93d8d45e"
+  },
+  {
+   "qid": "Q014",
+   "category": "duplicate_doc",
+   "traps": [
+    "split_payment",
+    "duplicate_doc"
+   ],
+   "question": "Did we pay Lefebvre Nettoyage for the invoice dated 2026-06-24? Does the amount match the invoice total?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0004",
+    "amount_ttc": 7033.74,
+    "paid_amount": 7033.74,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0004",
+    "invoice_amount_ttc": 7033.74,
+    "paid_amount": 7033.74,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00148",
+     "TXN-00164"
+    ],
+    "explanation": "The invoice LFN-2026-0004 for 7033.74 EUR was paid in two SEPA transfers on 2026-07-21 (4220.24 EUR) and 2026-08-20 (2813.50 EUR), matching the TTC total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2339.7,
+   "cost_usd": 0.0005345,
+   "tokens": 4757,
+   "request_id": "afdab4cf68ed"
+  },
+  {
+   "qid": "Q015",
+   "category": "not_found",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "Has supplier Dupont's May invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "not_found",
+    "invoice_number": null,
+    "amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null
+   },
+   "answer": {
+    "status": "not_found",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No invoice for supplier 'Dupont' was found in May 2026. The closest match is 'Dupond SAS' with invoice DPD-2026-0005, but it is not the requested supplier."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2883.9,
+   "cost_usd": 0.0007765,
+   "tokens": 7411,
+   "request_id": "6c93d2c2dc3b"
+  },
+  {
+   "qid": "Q016",
+   "category": "paid_no_ref",
+   "traps": [
+    "paid_no_ref"
+   ],
+   "question": "Did we pay Moreau Conseil for the invoice dated 2026-05-01? Does the amount match the invoice total?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MRC-2026-0004",
+    "amount_ttc": 6708.81,
+    "paid_amount": 6708.81,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MRC-2026-0004",
+    "invoice_amount_ttc": 6708.81,
+    "paid_amount": 6708.81,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00095"
+    ],
+    "explanation": "Invoice MRC-2026-0004 for Moreau Conseil (6 708,81 EUR TTC) was paid on 2026-05-15 by SEPA transfer (TXN-00095)."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2151.0,
+   "cost_usd": 0.000578,
+   "tokens": 5302,
+   "request_id": "b048342cccfc"
+  },
+  {
+   "qid": "Q017",
+   "category": "duplicate_doc",
+   "traps": [
+    "paid_no_ref",
+    "duplicate_doc"
+   ],
+   "question": "Has supplier Garcia Traiteur's May invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "GTR-2026-0004",
+    "amount_ttc": 11335.16,
+    "paid_amount": 11335.16,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "GTR-2026-0004",
+    "invoice_amount_ttc": 11335.16,
+    "paid_amount": 11335.16,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00125"
+    ],
+    "explanation": "Invoice GTR-2026-0004 for €11,335.16 TTC was paid on 2026-06-21 by bank transfer (TXN-00125) for the exact amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2178.1,
+   "cost_usd": 0.000574,
+   "tokens": 5298,
+   "request_id": "4fc79a9737e9"
+  },
+  {
+   "qid": "Q018",
+   "category": "plain_paid",
+   "traps": [],
+   "question": "Is invoice LFN-2026-0002 from Lefebvre Nettoyage fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0002",
+    "amount_ttc": 4551.65,
+    "paid_amount": 4551.65,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0002",
+    "invoice_amount_ttc": 4551.65,
+    "paid_amount": 4551.65,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00048"
+    ],
+    "explanation": "Invoice LFN-2026-0002 for €4,551.65 TTC was paid in full on 2026-03-22 via SEPA transfer (TXN-00048) with the invoice number as reference."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2503.0,
+   "cost_usd": 0.0005789,
+   "tokens": 5293,
+   "request_id": "2036c22f475b"
+  },
+  {
+   "qid": "Q019",
+   "category": "plain_partial",
+   "traps": [],
+   "question": "Did we pay Simon Informatique for the invoice dated 2026-02-18? Does the amount match the invoice total?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "SIF-2026-0002",
+    "amount_ttc": 1920.19,
+    "paid_amount": 1344.13,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "SIF-2026-0002",
+    "invoice_amount_ttc": 1920.19,
+    "paid_amount": 1344.13,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00037"
+    ],
+    "explanation": "Invoice SIF-2026-0002 (1 920,19 EUR TTC) was paid 1 344,13 EUR on 2026-03-11 (TXN-00037), leaving 576,06 EUR unpaid."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2957.0,
+   "cost_usd": 0.0007356,
+   "tokens": 6686,
+   "request_id": "3b0c716c30ea"
+  },
+  {
+   "qid": "Q020",
+   "category": "unpaid",
+   "traps": [],
+   "question": "Is invoice GEN-2026-0001 from Girard Energie fully paid?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "GEN-2026-0001",
+    "amount_ttc": 8519.47,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "unpaid",
+    "invoice_number": "GEN-2026-0001",
+    "invoice_amount_ttc": 8519.47,
+    "paid_amount": 0.0,
+    "amount_matches": false,
+    "evidence_transaction_ids": [],
+    "explanation": "Invoice GEN-2026-0001 from Girard Energie (8 519,47 EUR TTC) has no matching payment in the ledger. All payments found for this supplier reference other invoices."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2648.3,
+   "cost_usd": 0.0006902,
+   "tokens": 6332,
+   "request_id": "91ac25fb7ae5"
+  },
+  {
+   "qid": "Q021",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "Has supplier Martin Freres's June invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0005",
+    "amount_ttc": 13066.43,
+    "paid_amount": 13066.43,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0005",
+    "invoice_amount_ttc": 13066.43,
+    "paid_amount": 13066.43,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00129",
+     "TXN-00149"
+    ],
+    "explanation": "Invoice MFR-2026-0005 for €13,066.43 TTC was paid in two SEPA transfers on 2026-06-30 (€7,839.86) and 2026-07-21 (€5,226.57), matching the total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2393.2,
+   "cost_usd": 0.0005782,
+   "tokens": 5274,
+   "request_id": "0720597a2d29"
+  },
+  {
+   "qid": "Q022",
+   "category": "paid_no_ref",
+   "traps": [
+    "paid_no_ref"
+   ],
+   "question": "Has supplier Bonnet Telecom's February invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "BTC-2026-0002",
+    "amount_ttc": 10029.86,
+    "paid_amount": 10029.86,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "BTC-2026-0002",
+    "invoice_amount_ttc": 10029.86,
+    "paid_amount": 10029.86,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00051"
+    ],
+    "explanation": "Invoice BTC-2026-0002 for €10,029.86 was paid on 2026-03-25 (txn TXN-00051) for the exact amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2406.5,
+   "cost_usd": 0.0005885,
+   "tokens": 5453,
+   "request_id": "cf7ecdd2f697"
+  },
+  {
+   "qid": "Q023",
+   "category": "similar_name",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "Has supplier Martin Freres's February invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0002",
+    "amount_ttc": 1934.46,
+    "paid_amount": 1934.46,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0002",
+    "invoice_amount_ttc": 1934.46,
+    "paid_amount": 1934.46,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00046"
+    ],
+    "explanation": "Invoice MFR-2026-0002 (1 934,46 EUR TTC) was paid on 2026-03-20 by VIR SEPA for 1 934,46 EUR, matching the invoice total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2054.8,
+   "cost_usd": 0.0005966,
+   "tokens": 5524,
+   "request_id": "52dbf86748b0"
+  },
+  {
+   "qid": "Q024",
+   "category": "unpaid",
+   "traps": [],
+   "question": "Is invoice PIM-2026-0005 from Petit Imprimerie fully paid?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "PIM-2026-0005",
+    "amount_ttc": 889.79,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "unpaid",
+    "invoice_number": "PIM-2026-0005",
+    "invoice_amount_ttc": 889.79,
+    "paid_amount": 0.0,
+    "amount_matches": false,
+    "evidence_transaction_ids": [],
+    "explanation": "Invoice PIM-2026-0005 from Petit Imprimerie (889.79 EUR TTC) has no matching payments in the bank ledger."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3393.1,
+   "cost_usd": 0.0007592,
+   "tokens": 7104,
+   "request_id": "a6d54a0dfac2"
+  },
+  {
+   "qid": "Q025",
+   "category": "similar_name",
+   "traps": [
+    "paid_no_ref",
+    "similar_name"
+   ],
+   "question": "How much is still owed to Bernard Logistique for their May 2026 invoice?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "BLG-2026-0004",
+    "amount_ttc": 13962.85,
+    "paid_amount": 13962.85,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "BLG-2026-0004",
+    "invoice_amount_ttc": 13962.85,
+    "paid_amount": 13962.85,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00119"
+    ],
+    "explanation": "Invoice BLG-2026-0004 for €13,962.85 TTC was paid in full on 2026-06-10 (TXN-00119)."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2238.0,
+   "cost_usd": 0.0004894,
+   "tokens": 4412,
+   "request_id": "5de893cd27b0"
+  },
+  {
+   "qid": "Q026",
+   "category": "vat_only",
+   "traps": [
+    "vat_only"
+   ],
+   "question": "Has supplier Michel Electricite's March invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "MEL-2026-0003",
+    "amount_ttc": 3284.41,
+    "paid_amount": 2737.01,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "MEL-2026-0003",
+    "invoice_amount_ttc": 3284.41,
+    "paid_amount": 2737.01,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00073"
+    ],
+    "explanation": "Invoice MEL-2026-0003 for €3,284.41 TTC was paid on 2026-04-14 (TXN-00073) for €2,737.01 HT, leaving a shortfall of €547.40 (VAT) plus €0.00 HT."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 2,
+   "verifier_rejections": 1,
+   "verifier_problems": [
+    "status paid is inconsistent with paid 2737.01 vs TTC 3284.41 (expected partially_paid)"
+   ],
+   "latency_ms": 3922.4,
+   "cost_usd": 0.0008911,
+   "tokens": 8057,
+   "request_id": "7ceae9b6256a"
+  },
+  {
+   "qid": "Q027",
+   "category": "plain_paid",
+   "traps": [],
+   "question": "How much is still owed to Leroy Fournitures for their May 2026 invoice?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "LRF-2026-0002",
+    "amount_ttc": 12224.0,
+    "paid_amount": 12224.0,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "LRF-2026-0002",
+    "invoice_amount_ttc": 12224.0,
+    "paid_amount": 12224.0,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00117"
+    ],
+    "explanation": "Invoice LRF-2026-0002 for 12 224,00 EUR was paid in full on 2026-06-09 (TXN-00117). No remaining balance is owed."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2170.1,
+   "cost_usd": 0.0004796,
+   "tokens": 4342,
+   "request_id": "3e9eeb4fb4aa"
+  },
+  {
+   "qid": "Q028",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "Has supplier Garcia Traiteur's January invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "GTR-2026-0001",
+    "amount_ttc": 8562.53,
+    "paid_amount": 8562.53,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "GTR-2026-0001",
+    "invoice_amount_ttc": 8562.53,
+    "paid_amount": 8562.53,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00020",
+     "TXN-00034"
+    ],
+    "explanation": "Invoice GTR-2026-0001 for 8 562,53 EUR was paid in two SEPA transfers of 4 281,27 EUR and 4 281,26 EUR (total 8 562,53 EUR) on 2026-02-11 and 2026-03-03, matching the TTC amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2361.7,
+   "cost_usd": 0.0006221,
+   "tokens": 5685,
+   "request_id": "3e3825f4bdf5"
+  },
+  {
+   "qid": "Q029",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "Did we pay Fournier Bureautique for the invoice dated 2026-02-23? Does the amount match the invoice total?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "FBU-2026-0002",
+    "amount_ttc": 3279.83,
+    "paid_amount": 3279.83,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "FBU-2026-0002",
+    "invoice_amount_ttc": 3279.83,
+    "paid_amount": 3279.83,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00070",
+     "TXN-00090"
+    ],
+    "explanation": "Invoice FBU-2026-0002 for €3,279.83 TTC was paid in two instalments of €1,639.92 and €1,639.91 on 2026-04-07 and 2026-05-05, matching the total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3462.8,
+   "cost_usd": 0.0005289,
+   "tokens": 4725,
+   "request_id": "d35c28a52af4"
+  },
+  {
+   "qid": "Q030",
+   "category": "plain_paid",
+   "traps": [],
+   "question": "Has supplier Bernard Logistics's May invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "BLS-2026-0005",
+    "amount_ttc": 1332.97,
+    "paid_amount": 1332.97,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "BLS-2026-0005",
+    "invoice_amount_ttc": 1332.97,
+    "paid_amount": 1332.97,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00114"
+    ],
+    "explanation": "Invoice BLS-2026-0005 for €1 332.97 TTC was paid on 2026-06-05 by SEPA transfer labelled with the invoice reference (TXN-00114)."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2157.6,
+   "cost_usd": 0.0004925,
+   "tokens": 4467,
+   "request_id": "dd08e9ffa60c"
+  },
+  {
+   "qid": "Q031",
+   "category": "plain_partial",
+   "traps": [],
+   "question": "Did we pay Bernard Logistics for the invoice dated 2026-06-06? Does the amount match the invoice total?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "BLS-2026-0006",
+    "amount_ttc": 5695.6,
+    "paid_amount": 1708.68,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "BLS-2026-0006",
+    "invoice_amount_ttc": 5695.6,
+    "paid_amount": 1708.68,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00144"
+    ],
+    "explanation": "Invoice BLS-2026-0006 (5 695,60 EUR TTC) shows a partial payment of 1 708,68 EUR on 2026-07-19 (TXN-00144). No other payment references this invoice."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3554.7,
+   "cost_usd": 0.0006915,
+   "tokens": 6251,
+   "request_id": "7a3e090147a6"
+  },
+  {
+   "qid": "Q032",
+   "category": "not_found",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "Has supplier Martin & Fils's June invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "not_found",
+    "invoice_number": null,
+    "amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0005",
+    "invoice_amount_ttc": 13066.43,
+    "paid_amount": 13066.43,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00129",
+     "TXN-00149"
+    ],
+    "explanation": "Invoice MFR-2026-0005 (13 066,43 EUR TTC) was paid in two instalments: 7 839,86 EUR on 2026-06-30 and 5 226,57 EUR on 2026-07-21, matching the total."
+   },
+   "outcome": "answered",
+   "correct": false,
+   "failure": "false_match",
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2424.8,
+   "cost_usd": 0.0005946,
+   "tokens": 5394,
+   "request_id": "f6a620fbc3f7"
+  },
+  {
+   "qid": "Q033",
+   "category": "duplicate_doc",
+   "traps": [
+    "paid_no_ref",
+    "duplicate_doc"
+   ],
+   "question": "How much is still owed to Bernard Logistique for their April 2026 invoice?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "BLG-2026-0003",
+    "amount_ttc": 4227.49,
+    "paid_amount": 4227.49,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "BLG-2026-0003",
+    "invoice_amount_ttc": 4227.49,
+    "paid_amount": 4227.49,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00103"
+    ],
+    "explanation": "Invoice BLG-2026-0003 for 4227.49 EUR TTC was paid in full on 2026-05-21 (TXN-00103)."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2226.1,
+   "cost_usd": 0.0005224,
+   "tokens": 4734,
+   "request_id": "a00bc636ded4"
+  },
+  {
+   "qid": "Q034",
+   "category": "plain_partial",
+   "traps": [],
+   "question": "Is invoice LTR-2026-0003 from Laurent Transports fully paid?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "LTR-2026-0003",
+    "amount_ttc": 2011.15,
+    "paid_amount": 1407.81,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "LTR-2026-0003",
+    "invoice_amount_ttc": 2011.15,
+    "paid_amount": 1407.81,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00093"
+    ],
+    "explanation": "Invoice LTR-2026-0003 shows a single payment of 1407.81 EUR on 2026-05-12 (TXN-00093), which is less than its TTC total of 2011.15 EUR."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 5,
+   "tool_calls": 4,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3133.7,
+   "cost_usd": 0.0010763,
+   "tokens": 10135,
+   "request_id": "f1d644b9941c"
+  },
+  {
+   "qid": "Q035",
+   "category": "plain_paid",
+   "traps": [],
+   "question": "Is invoice FBU-2026-0003 from Fournier Bureautique fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "FBU-2026-0003",
+    "amount_ttc": 10210.26,
+    "paid_amount": 10210.26,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "FBU-2026-0003",
+    "invoice_amount_ttc": 10210.26,
+    "paid_amount": 10210.26,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00058"
+    ],
+    "explanation": "Invoice FBU-2026-0003 for 10 210,26 EUR TTC was paid in full on 2026-03-29 by SEPA transfer (TXN-00058) with reference to this invoice."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3121.3,
+   "cost_usd": 0.0008026,
+   "tokens": 7430,
+   "request_id": "5758336be03f"
+  },
+  {
+   "qid": "Q036",
+   "category": "paid_no_ref",
+   "traps": [
+    "paid_no_ref"
+   ],
+   "question": "Is invoice MRC-2026-0001 from Moreau Conseil fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MRC-2026-0001",
+    "amount_ttc": 4928.5,
+    "paid_amount": 4928.5,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MRC-2026-0001",
+    "invoice_amount_ttc": 4928.5,
+    "paid_amount": 4928.5,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00027"
+    ],
+    "explanation": "Invoice MRC-2026-0001 for 4 928,50 EUR TTC was paid on 2026-02-24 by a SEPA transfer to Moreau Conseil (TXN-00027)."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3078.2,
+   "cost_usd": 0.000774,
+   "tokens": 7160,
+   "request_id": "4847a637f8e4"
+  },
+  {
+   "qid": "Q037",
+   "category": "similar_name",
+   "traps": [
+    "similar_name"
+   ],
+   "question": "How much is still owed to Martin & Fils for their April 2026 invoice?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "MAF-2026-0004",
+    "amount_ttc": 9716.02,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "unpaid",
+    "invoice_number": "MAF-2026-0004",
+    "invoice_amount_ttc": 9716.02,
+    "paid_amount": 0.0,
+    "amount_matches": false,
+    "evidence_transaction_ids": [],
+    "explanation": "Invoice MAF-2026-0004 from Martin & Fils (9 716,02 EUR TTC) is unpaid; no outgoing payments to this supplier are recorded since its issue date."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2054.2,
+   "cost_usd": 0.0004564,
+   "tokens": 4144,
+   "request_id": "543df1c2dc1b"
+  },
+  {
+   "qid": "Q038",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "Is invoice BTC-2026-0004 from Bonnet Telecom fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "BTC-2026-0004",
+    "amount_ttc": 9176.17,
+    "paid_amount": 9176.17,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "BTC-2026-0004",
+    "invoice_amount_ttc": 9176.17,
+    "paid_amount": 9176.17,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00152",
+     "TXN-00159"
+    ],
+    "explanation": "Invoice BTC-2026-0004 from Bonnet Telecom for €9,176.17 TTC was paid in two SEPA transfers: €5,505.70 on 2026-07-26 and €3,670.47 on 2026-08-12, matching the total amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2303.3,
+   "cost_usd": 0.0005834,
+   "tokens": 5296,
+   "request_id": "6b5a91317e03"
+  },
+  {
+   "qid": "Q039",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "Is invoice LFN-2026-0003 from Lefebvre Nettoyage fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0003",
+    "amount_ttc": 505.87,
+    "paid_amount": 505.87,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "LFN-2026-0003",
+    "invoice_amount_ttc": 505.87,
+    "paid_amount": 505.87,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00083",
+     "TXN-00111"
+    ],
+    "explanation": "Invoice LFN-2026-0003 from Lefebvre Nettoyage (505.87 EUR TTC) is fully paid. Two SEPA transfers on 2026-04-24 (252.94 EUR) and 2026-06-02 (252.93 EUR) match the total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2450.0,
+   "cost_usd": 0.0005971,
+   "tokens": 5411,
+   "request_id": "34814d3701fd"
+  },
+  {
+   "qid": "Q040",
+   "category": "vat_only",
+   "traps": [
+    "vat_only"
+   ],
+   "question": "How much is still owed to Laurent Transports for their June 2026 invoice?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "LTR-2026-0006",
+    "amount_ttc": 3367.25,
+    "paid_amount": 3061.14,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "insufficient_evidence",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No answer given: the evidence did not support it. status paid is inconsistent with paid 3061.14 vs TTC 3367.25 (expected partially_paid)"
+   },
+   "outcome": "refused",
+   "correct": false,
+   "failure": "refused",
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 2,
+   "verifier_rejections": 2,
+   "verifier_problems": [
+    "paid_amount 3367.25 is not the sum of the cited transactions (3061.14)",
+    "status paid is inconsistent with paid 3061.14 vs TTC 3367.25 (expected partially_paid)"
+   ],
+   "latency_ms": 3285.1,
+   "cost_usd": 0.000694,
+   "tokens": 6114,
+   "request_id": "b10296623bae"
+  },
+  {
+   "qid": "Q041",
+   "category": "unpaid",
+   "traps": [],
+   "question": "Is invoice RXS-2026-0002 from Roux Securite fully paid?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "RXS-2026-0002",
+    "amount_ttc": 12309.16,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "unpaid",
+    "invoice_number": "RXS-2026-0002",
+    "invoice_amount_ttc": 12309.16,
+    "paid_amount": 0.0,
+    "amount_matches": false,
+    "evidence_transaction_ids": [],
+    "explanation": "Invoice RXS-2026-0002 for 12 309.16 € is unpaid. No payment with a label referencing this invoice was found, and no other payment to Roux Sécurité fits its amount."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2743.3,
+   "cost_usd": 0.0007472,
+   "tokens": 6950,
+   "request_id": "3e54269b2b99"
+  },
+  {
+   "qid": "Q042",
+   "category": "split_payment",
+   "traps": [
+    "split_payment"
+   ],
+   "question": "How much is still owed to Roux Securite for their June 2026 invoice?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "RXS-2026-0004",
+    "amount_ttc": 4482.67,
+    "paid_amount": 4482.67,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "RXS-2026-0004",
+    "invoice_amount_ttc": 4482.67,
+    "paid_amount": 4482.67,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00150",
+     "TXN-00157"
+    ],
+    "explanation": "Invoice RXS-2026-0004 from Roux Securite (4 482,67 EUR TTC) is fully paid. Two SEPA transfers on 2026-07-22 (1 793,07 EUR) and 2026-08-08 (2 689,60 EUR) match the total."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2354.3,
+   "cost_usd": 0.0004958,
+   "tokens": 4394,
+   "request_id": "07fe2e38cf03"
+  },
+  {
+   "qid": "Q043",
+   "category": "unpaid",
+   "traps": [],
+   "question": "Has supplier Martin & Fils's March invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "MAF-2026-0003",
+    "amount_ttc": 9709.23,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "partially_paid",
+    "invoice_number": "MAF-2026-0003",
+    "invoice_amount_ttc": 9709.23,
+    "paid_amount": 9337.56,
+    "amount_matches": false,
+    "evidence_transaction_ids": [
+     "TXN-00066"
+    ],
+    "explanation": "The invoice MAF-2026-0003 (9709.23 EUR TTC) has one payment of 9337.56 EUR on 2026-04-05. The remaining 371.67 EUR is unpaid."
+   },
+   "outcome": "answered",
+   "correct": false,
+   "failure": "overcounted_payment",
+   "right_tools": true,
+   "llm_calls": 6,
+   "tool_calls": 4,
+   "verifier_rejections": 1,
+   "verifier_problems": [
+    "paid_amount 11272.02 exceeds the TTC total 9709.23: check for payments that belong to another invoice or another supplier"
+   ],
+   "latency_ms": 6553.8,
+   "cost_usd": 0.0013525,
+   "tokens": 12415,
+   "request_id": "a85e4972d51c"
+  },
+  {
+   "qid": "Q044",
+   "category": "not_found",
+   "traps": [],
+   "question": "Has supplier Durand Plomberie's June invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "not_found",
+    "invoice_number": null,
+    "amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null
+   },
+   "answer": {
+    "status": "not_found",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No invoice from supplier Durand Plomberie was found for June 2025 or June 2026."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 3,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2350.3,
+   "cost_usd": 0.0006756,
+   "tokens": 6434,
+   "request_id": "9ce0e3b486ab"
+  },
+  {
+   "qid": "Q045",
+   "category": "duplicate_doc",
+   "traps": [
+    "duplicate_doc"
+   ],
+   "question": "How much is still owed to Martin Freres for their May 2026 invoice?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0004",
+    "amount_ttc": 1202.76,
+    "paid_amount": 1202.76,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "MFR-2026-0004",
+    "invoice_amount_ttc": 1202.76,
+    "paid_amount": 1202.76,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00109"
+    ],
+    "explanation": "Invoice MFR-2026-0004 for €1202.76 TTC was paid on 2026-06-01 (TXN-00109). No remaining balance is owed."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 3,
+   "tool_calls": 2,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 2587.3,
+   "cost_usd": 0.000517,
+   "tokens": 4702,
+   "request_id": "e50e7fde269d"
+  },
+  {
+   "qid": "Q046",
+   "category": "unpaid",
+   "traps": [],
+   "question": "Is invoice LTR-2026-0005 from Laurent Transports fully paid?",
+   "expected": {
+    "status": "unpaid",
+    "invoice_number": "LTR-2026-0005",
+    "amount_ttc": 6992.9,
+    "paid_amount": 0.0,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "unpaid",
+    "invoice_number": "LTR-2026-0005",
+    "invoice_amount_ttc": 6992.9,
+    "paid_amount": 0.0,
+    "amount_matches": false,
+    "evidence_transaction_ids": [],
+    "explanation": "Invoice LTR-2026-0005 (6 992,90 EUR TTC) issued on 2026-05-28 has no matching payment in the ledger. A single payment of 3 061,14 EUR to Laurent Transports references invoice LTR-2026-0006."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 7,
+   "tool_calls": 6,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 6126.2,
+   "cost_usd": 0.0013547,
+   "tokens": 12641,
+   "request_id": "cf045d8cca01"
+  },
+  {
+   "qid": "Q047",
+   "category": "vat_only",
+   "traps": [
+    "vat_only"
+   ],
+   "question": "Has supplier Laurent Transports's January invoice been paid, and does the bank amount match?",
+   "expected": {
+    "status": "partially_paid",
+    "invoice_number": "LTR-2026-0001",
+    "amount_ttc": 1216.3,
+    "paid_amount": 1105.73,
+    "amount_matches": false
+   },
+   "answer": {
+    "status": "insufficient_evidence",
+    "invoice_number": null,
+    "invoice_amount_ttc": null,
+    "paid_amount": null,
+    "amount_matches": null,
+    "evidence_transaction_ids": [],
+    "explanation": "No answer given: the evidence did not support it. status paid is inconsistent with paid 1105.73 vs TTC 1216.3 (expected partially_paid)"
+   },
+   "outcome": "refused",
+   "correct": false,
+   "failure": "refused",
+   "right_tools": true,
+   "llm_calls": 4,
+   "tool_calls": 2,
+   "verifier_rejections": 2,
+   "verifier_problems": [
+    "paid_amount 1216.3 is not the sum of the cited transactions (1105.73)",
+    "status paid is inconsistent with paid 1105.73 vs TTC 1216.3 (expected partially_paid)"
+   ],
+   "latency_ms": 3325.3,
+   "cost_usd": 0.0008713,
+   "tokens": 7963,
+   "request_id": "473cbd77fa6e"
+  },
+  {
+   "qid": "Q048",
+   "category": "paid_no_ref",
+   "traps": [
+    "paid_no_ref"
+   ],
+   "question": "Is invoice SIF-2026-0003 from Simon Informatique fully paid?",
+   "expected": {
+    "status": "paid",
+    "invoice_number": "SIF-2026-0003",
+    "amount_ttc": 305.72,
+    "paid_amount": 305.72,
+    "amount_matches": true
+   },
+   "answer": {
+    "status": "paid",
+    "invoice_number": "SIF-2026-0003",
+    "invoice_amount_ttc": 305.72,
+    "paid_amount": 305.72,
+    "amount_matches": true,
+    "evidence_transaction_ids": [
+     "TXN-00085"
+    ],
+    "explanation": "Invoice SIF-2026-0003 for 305.72 EUR TTC was paid on 2026-04-26 by a SEPA transfer to Simon Informatique (txn_id TXN-00085)."
+   },
+   "outcome": "answered",
+   "correct": true,
+   "failure": null,
+   "right_tools": true,
+   "llm_calls": 5,
+   "tool_calls": 4,
+   "verifier_rejections": 0,
+   "verifier_problems": [],
+   "latency_ms": 3461.5,
+   "cost_usd": 0.0009864,
+   "tokens": 9244,
+   "request_id": "f7392b780be6"
+  }
+ ]
+}

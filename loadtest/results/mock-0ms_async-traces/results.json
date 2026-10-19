@@ -1,0 +1,43 @@
+{
+ "llm": "mock",
+ "model": "mock",
+ "agent_version": "v3",
+ "mock_latency_ms": 0,
+ "duration_s": 20,
+ "server": "uvicorn, 1 process",
+ "machine": "8 logical CPUs, win32",
+ "rows": [
+  {
+   "users": 1,
+   "requests": 296,
+   "rps": 16.43,
+   "p50_ms": 9.0,
+   "p95_ms": 14.0,
+   "error_rate": 0.0
+  },
+  {
+   "users": 5,
+   "requests": 1381,
+   "rps": 72.15,
+   "p50_ms": 15.0,
+   "p95_ms": 38.0,
+   "error_rate": 0.0
+  },
+  {
+   "users": 10,
+   "requests": 1935,
+   "rps": 101.4,
+   "p50_ms": 42.0,
+   "p95_ms": 99.0,
+   "error_rate": 0.0
+  },
+  {
+   "users": 20,
+   "requests": 2113,
+   "rps": 110.23,
+   "p50_ms": 120.0,
+   "p95_ms": 210.0,
+   "error_rate": 0.0
+  }
+ ]
+}

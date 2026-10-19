@@ -5,7 +5,8 @@ The data is synthetic on purpose and contains traps that make verification neces
 split payments, partial payments, payments of the pre-VAT amount only, duplicate
 invoice copies, payments without a reference, and suppliers with near-identical names.
 
-Run:  python -m recon.data_gen
+Run:  python -m recon.data_gen          # dataset from RECON_DATASET (default dev)
+      RECON_DATASET=test python -m recon.data_gen
 """
 
 import json
@@ -16,7 +17,6 @@ from datetime import date, timedelta
 
 from recon.config import settings
 
-SEED = 42
 YEAR = 2026
 MONTHS = range(1, 7)  # January to June 2026
 MONTH_EN = ["January", "February", "March", "April", "May", "June",
@@ -105,7 +105,7 @@ def render_document(inv: dict, copy: bool) -> str:
     ])
 
 
-def generate(seed: int = SEED):
+def generate(seed: int = settings.seed):
     rng = random.Random(seed)
     invoices, docs, txns, truth = [], [], [], []
 
@@ -260,7 +260,7 @@ def build_questions(rng: random.Random, truth: list[dict]) -> list[dict]:
 
 
 def write(docs, txns, truth, questions) -> None:
-    settings.data_dir.mkdir(exist_ok=True)
+    settings.data_dir.mkdir(parents=True, exist_ok=True)
     settings.eval_dir.mkdir(exist_ok=True)
 
     with open(settings.invoices_path, "w", encoding="utf-8") as f:
@@ -297,6 +297,6 @@ def ensure_data() -> None:
 if __name__ == "__main__":
     docs, txns, truth, questions = generate()
     write(docs, txns, truth, questions)
-    print(f"{len({d['invoice_number'] for d in docs})} invoices ({len(docs)} documents), {len(txns)} transactions")
+    print(f"dataset {settings.dataset} (seed {settings.seed}): {len({d['invoice_number'] for d in docs})} invoices ({len(docs)} documents), {len(txns)} transactions")
     print("scenarios:", dict(Counter(t["scenario"] for t in truth)))
     print("questions:", len(questions), dict(Counter(q["category"] for q in questions)))

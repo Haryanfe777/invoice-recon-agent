@@ -8,9 +8,10 @@ import json
 import random
 import re
 import string
+import threading
 import time
 from dataclasses import dataclass, field
-from typing import Protocol
+from typing import Callable, Protocol
 
 from recon.config import settings
 
@@ -29,6 +30,7 @@ class ModelResponse:
     prompt_tokens: int = 0
     completion_tokens: int = 0
     retries: int = 0  # provider-side retries (rate limits, 5xx) before this response
+    wait_ms: float = 0.0  # time spent queued in the client-side rate limiter
 
 
 class ChatModel(Protocol):
@@ -46,22 +48,76 @@ def _call_id() -> str:
     return "".join(random.choices(string.ascii_letters + string.digits, k=9))
 
 
+class RateLimiter:
+    """Thread-safe token bucket that queues callers instead of letting them hit a 429.
+
+    Each acquire() reserves the next free slot under the lock, then sleeps until it comes up.
+    Reservations are handed out in arrival order, so waiting callers never stampede the
+    provider together. A caller whose slot is further away than its timeout gets its
+    reservation back and an error, rather than waiting past its request deadline.
+    """
+
+    def __init__(self, rate_per_s: float, burst: float = 1.0,
+                 clock: Callable[[], float] = time.monotonic, sleep: Callable[[float], None] = time.sleep):
+        if rate_per_s <= 0:
+            raise ValueError("rate_per_s must be positive")
+        self.rate, self.capacity = rate_per_s, max(1.0, burst)
+        self.clock, self.sleep = clock, sleep
+        self.tokens, self.updated = self.capacity, clock()
+        self._lock = threading.Lock()
+
+    def acquire(self, timeout_s: float | None = None) -> float:
+        """Wait for a slot; return the seconds waited. Raises TimeoutError past timeout_s."""
+        with self._lock:
+            now = self.clock()
+            self.tokens = min(self.capacity, self.tokens + (now - self.updated) * self.rate)
+            self.updated = now
+            self.tokens -= 1  # may go negative: that is a reservation for a future slot
+            wait = max(0.0, -self.tokens / self.rate)
+            if timeout_s is not None and wait > timeout_s:
+                self.tokens += 1
+                raise TimeoutError(f"rate limiter queue is {wait:.1f}s long, over the {timeout_s:.1f}s budget")
+        if wait:
+            self.sleep(wait)
+        return wait
+
+
+_limiters: dict[float, RateLimiter] = {}
+_limiters_lock = threading.Lock()
+
+
+def shared_limiter(rate_per_s: float) -> RateLimiter:
+    """One limiter per rate for the whole process: the provider quota is per API key, not per thread."""
+    with _limiters_lock:
+        if rate_per_s not in _limiters:
+            _limiters[rate_per_s] = RateLimiter(rate_per_s)
+        return _limiters[rate_per_s]
+
+
 class MistralModel:
     RETRYABLE = {429, 500, 502, 503, 504}
 
     def __init__(self, model: str = settings.model, api_key: str = settings.api_key,
-                 timeout_s: float = settings.llm_timeout_s, max_retries: int = 3):
+                 timeout_s: float = settings.llm_timeout_s, max_retries: int = 3,
+                 limiter: RateLimiter | None = None):
         from mistralai.client import Mistral  # imported lazily so offline runs need no key
 
         if not api_key:
             raise ModelError("MISTRAL_API_KEY is not set (copy .env.example to .env)")
         self.name = model
         self.client = Mistral(api_key=api_key, timeout_ms=int(timeout_s * 1000))
+        self.timeout_s = timeout_s
         self.max_retries = max_retries
+        self.limiter = limiter or (shared_limiter(settings.llm_rps) if settings.llm_rps > 0 else None)
 
     def complete(self, messages: list[dict], tools: list[dict]) -> ModelResponse:
-        retries = 0
+        retries, waited = 0, 0.0
         while True:
+            if self.limiter:  # every attempt, retries included, spends quota
+                try:
+                    waited += self.limiter.acquire(timeout_s=self.timeout_s)
+                except TimeoutError as e:
+                    raise ModelError(f"rate limited locally: {e}") from e
             try:
                 res = self.client.chat.complete(
                     model=self.name, messages=messages, tools=tools,
@@ -72,7 +128,8 @@ class MistralModel:
                 status = getattr(e, "status_code", None)
                 if status in self.RETRYABLE and retries < self.max_retries:
                     retries += 1
-                    time.sleep(min(8.0, 0.5 * 2 ** retries) + random.random() * 0.25)
+                    # Full jitter: spread retries over the whole window so threads do not retry in lockstep.
+                    time.sleep(random.uniform(0, min(8.0, 0.5 * 2 ** retries)))
                     continue
                 raise ModelError(f"{type(e).__name__} (status {status}): {e}") from e
 
@@ -84,7 +141,8 @@ class MistralModel:
         content = msg.content if isinstance(msg.content, str) else ""
         return ModelResponse(content=content or "", tool_calls=calls,
                              prompt_tokens=res.usage.prompt_tokens or 0,
-                             completion_tokens=res.usage.completion_tokens or 0, retries=retries)
+                             completion_tokens=res.usage.completion_tokens or 0, retries=retries,
+                             wait_ms=waited * 1000)
 
 
 def _approx_tokens(messages: list[dict]) -> int:
@@ -130,16 +188,18 @@ class MockModel:
             return "final_answer", {"status": "not_found", "explanation": "No matching invoice found."}
         inv = invoices[0]
         if len(results) == 1:
-            return "query_ledger", {"label_contains": inv["invoice_number"]}
+            return "query_ledger", {"counterparty": inv["supplier"], "date_from": inv["issue_date"]}
 
-        txns = results[-1].get("transactions", [])
+        # Naive matching: a payment counts if it cites the invoice number or equals the TTC total.
+        txns = [t for t in results[-1].get("transactions", [])
+                if inv["invoice_number"] in t["label"] or abs(t["amount"] - inv["amount_ttc"]) < 0.01]
         paid = round(sum(t["amount"] for t in txns), 2)
         status = "unpaid" if not txns else ("paid" if abs(paid - inv["amount_ttc"]) < 0.01 else "partially_paid")
         return "final_answer", {
             "status": status, "invoice_number": inv["invoice_number"], "invoice_amount_ttc": inv["amount_ttc"],
             "paid_amount": paid, "amount_matches": status == "paid",
             "evidence_transaction_ids": [t["txn_id"] for t in txns],
-            "explanation": f"{len(txns)} payment(s) referencing {inv['invoice_number']}, total {paid} EUR.",
+            "explanation": f"{len(txns)} matching payment(s), total {paid} EUR.",
         }
 
 

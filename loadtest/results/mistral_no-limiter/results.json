@@ -1,0 +1,47 @@
+{
+ "llm": "mistral",
+ "model": "mistral-small-latest",
+ "agent_version": "v4",
+ "mock_latency_ms": 0,
+ "duration_s": 30,
+ "server": "uvicorn, 1 process",
+ "machine": "8 logical CPUs, win32",
+ "rows": [
+  {
+   "users": 1,
+   "requests": 9,
+   "rps": 0.34,
+   "p50_ms": 3000.0,
+   "p95_ms": 4300.0,
+   "error_rate": 0.0,
+   "top_failure": null
+  },
+  {
+   "users": 5,
+   "requests": 36,
+   "rps": 1.64,
+   "p50_ms": 2900.0,
+   "p95_ms": 4400.0,
+   "error_rate": 0.0,
+   "top_failure": null
+  },
+  {
+   "users": 10,
+   "requests": 30,
+   "rps": 1.08,
+   "p50_ms": 8700.0,
+   "p95_ms": 9600.0,
+   "error_rate": 1.0,
+   "top_failure": "CatchResponseError('agent error')"
+  },
+  {
+   "users": 20,
+   "requests": 59,
+   "rps": 2.2,
+   "p50_ms": 9600.0,
+   "p95_ms": 14000.0,
+   "error_rate": 0.678,
+   "top_failure": "CatchResponseError('agent error')"
+  }
+ ]
+}
